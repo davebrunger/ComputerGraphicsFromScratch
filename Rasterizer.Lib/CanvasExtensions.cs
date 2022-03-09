@@ -6,7 +6,7 @@ public static class CanvasExtensions
     {
         foreach (var x in Enumerable.Range(-canvas.Width / 2, canvas.Width))
         {
-            foreach (var y in  Enumerable.Range(-canvas.Height / 2, canvas.Height))
+            foreach (var y in Enumerable.Range(-canvas.Height / 2, canvas.Height))
             {
                 canvas.PutPixel(x, y, colour);
             }
@@ -35,13 +35,13 @@ public static class CanvasExtensions
     public static void DrawFilledTriangle(this ICanvas canvas, Triangle triangle, Colour colour)
     {
         var points = new[] { triangle.P0, triangle.P1, triangle.P2 }.OrderBy(p => p.Y).ToArray();
-        
+
         var shortSidesXs = Utilities.Interpolate(points[0].Y, points[0].X, points[1].Y, points[1].X)
             .Concat(Utilities.Interpolate(points[1].Y, points[1].X, points[2].Y, points[2].X).Skip(1))
             .ToArray();
         var longSideXs = Utilities.Interpolate(points[0].Y, points[0].X, points[2].Y, points[2].X)
             .ToArray();
-        
+
         var middle = longSideXs.Length / 2;
         var (leftSideXs, rightSideXs) = longSideXs[middle] < shortSidesXs[middle]
             ? (longSideXs, shortSidesXs)
@@ -54,6 +54,40 @@ public static class CanvasExtensions
             for (var x = (int)leftSideXs[yOffset]; x <= maxX; x++)
             {
                 canvas.PutPixel(x, y, colour);
+            }
+        }
+    }
+
+    public static void DrawShadedTriangle(this ICanvas canvas, Triangle triangle, Colour colour)
+    {
+        var points = new[] { triangle.P0, triangle.P1, triangle.P2 }.OrderBy(p => p.Y).ToArray();
+
+        var shortSidesXs = Utilities.Interpolate(points[0].Y, points[0].X, points[1].Y, points[1].X)
+            .Concat(Utilities.Interpolate(points[1].Y, points[1].X, points[2].Y, points[2].X).Skip(1))
+            .ToArray();
+        var shortSideHs = Utilities.Interpolate(points[0].Y, points[0].H, points[1].Y, points[1].H)
+            .Concat(Utilities.Interpolate(points[1].Y, points[1].H, points[2].Y, points[2].H).Skip(1))
+            .ToArray();
+        var longSideXs = Utilities.Interpolate(points[0].Y, points[0].X, points[2].Y, points[2].X)
+            .ToArray();
+        var longSideHs = Utilities.Interpolate(points[0].Y, points[0].H, points[2].Y, points[2].H)
+            .ToArray();
+
+        var middle = longSideXs.Length / 2;
+        var (leftSideXs, leftSideHs, rightSideXs, rightSideHs) = longSideXs[middle] < shortSidesXs[middle]
+            ? (longSideXs, longSideHs, shortSidesXs, shortSideHs)
+            : (shortSidesXs, shortSideHs, longSideXs, longSideHs);
+
+        for (var y = points[0].Y; y <= points[2].Y; y++)
+        {
+            var yOffset = y - points[0].Y;
+            var leftX = (int)leftSideXs[yOffset];
+            var rightX = (int)rightSideXs[yOffset];
+            var hs = Utilities.Interpolate(leftX, leftSideHs[yOffset], rightX, rightSideHs[yOffset]).ToArray();
+            for (var x = leftX; x <= rightX; x++)
+            {
+                var pixelColor = hs[x - leftX] * colour;
+                canvas.PutPixel(x, y, pixelColor);
             }
         }
     }

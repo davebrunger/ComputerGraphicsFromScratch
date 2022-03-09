@@ -17,5 +17,5 @@ var scene = new Scene(spheres, lights, Colours.Black);
 
 Renderer.Render(canvas, viewPort, scene, camera, 3);
 
-await canvas.SaveAsync($"C:\\Temp\\{Guid.NewGuid()}.bmp", CancellationToken.None);
+await canvas.SaveAsync($"C:\\Temp\\{DateTime.Now:yyyyMMddHHmmss}.bmp", CancellationToken.None);
 Console.WriteLine("Done");

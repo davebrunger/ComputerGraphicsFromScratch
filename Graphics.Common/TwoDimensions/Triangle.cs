@@ -1,4 +1,3 @@
 ﻿namespace Graphics.Common.TwoDimensions;
 
-public record Triangle(Point P0, Point P1, Point P2);
-
+public record Triangle(Vertex P0, Vertex P1, Vertex P2);
