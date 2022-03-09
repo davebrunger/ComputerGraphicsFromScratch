@@ -1,6 +1,6 @@
 ﻿namespace RayTracer.Lib;
 
-public class Renderer
+public static class Renderer
 {
     public static void Render(ICanvas canvas, ViewPort viewPort, Scene scene, Camera camera, int recursionDepth)
     {
