@@ -19,5 +19,28 @@ public static class Renderer
             viewPort, canvas);
 
     }
+
+    public static void RenderObject(Object3 obj, ViewPort viewPort, ICanvas canvas)
+    {
+        var projected = obj.Model.Vertices.Select(localPoint =>
+        {
+            var globalPoint = localPoint.Transform(obj);
+            return Project(globalPoint, viewPort, canvas);
+
+        }).ToArray();
+        foreach (var t in obj.Model.Triangles)
+        {
+            var canvasTriangle = new Triangle2(projected[t.P0Index], projected[t.P1Index], projected[t.P2Index]);
+            canvas.DrawWireFrameTriangle(canvasTriangle, t.Colour);
+        }
+    }
+
+    public static void RenderScene(IEnumerable<Object3> objects, ViewPort viewPort, ICanvas canvas)
+    {
+        foreach (var obj in objects)
+        {
+            RenderObject(obj, viewPort, canvas);
+        }
+    }
 }
 

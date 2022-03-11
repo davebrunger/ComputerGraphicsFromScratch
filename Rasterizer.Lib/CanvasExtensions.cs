@@ -25,14 +25,14 @@ public static class CanvasExtensions
         }
     }
 
-    public static void DrawWireFrameTriangle(this ICanvas canvas, Triangle triangle, Colour colour)
+    public static void DrawWireFrameTriangle(this ICanvas canvas, Triangle2 triangle, Colour colour)
     {
         canvas.DrawLine(new Line(triangle.P0, triangle.P1), colour);
         canvas.DrawLine(new Line(triangle.P1, triangle.P2), colour);
         canvas.DrawLine(new Line(triangle.P2, triangle.P0), colour);
     }
 
-    public static void DrawFilledTriangle(this ICanvas canvas, Triangle triangle, Colour colour)
+    public static void DrawFilledTriangle(this ICanvas canvas, Triangle2 triangle, Colour colour)
     {
         var points = new[] { triangle.P0, triangle.P1, triangle.P2 }.OrderBy(p => p.Y).ToArray();
 
@@ -58,7 +58,7 @@ public static class CanvasExtensions
         }
     }
 
-    public static void DrawShadedTriangle(this ICanvas canvas, Triangle triangle, Colour colour)
+    public static void DrawShadedTriangle(this ICanvas canvas, Triangle2 triangle, Colour colour)
     {
         var points = new[] { triangle.P0, triangle.P1, triangle.P2 }.OrderBy(p => p.Y).ToArray();
 

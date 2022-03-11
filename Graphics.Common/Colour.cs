@@ -34,7 +34,9 @@ public static class Colours
 {
     public static readonly Colour Black = new(0, 0, 0);
     public static readonly Colour Blue = new(0, 0, 255);
+    public static readonly Colour Cyan = new(0, 255, 255);
     public static readonly Colour Green = new(0, 255, 0);
+    public static readonly Colour Purple = new(128, 0, 128);
     public static readonly Colour Red = new(255, 0, 0);
     public static readonly Colour White = new(255, 255, 255);
     public static readonly Colour Yellow = new(255, 255, 0);

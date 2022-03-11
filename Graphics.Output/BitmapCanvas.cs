@@ -12,9 +12,21 @@ public class BitmapCanvas : ICanvas, IDisposable
 
     public int Height => bitmap.Height;
     public int Width => bitmap.Width;
+
     public void PutPixel(int x, int y, Colour colour)
     {
-        bitmap[Width / 2 + x, Height / 2 - (y + 1)] = new Rgba32(colour.Red / 255F, colour.Green / 255F, colour.Blue / 255F);
+        var bitmapX = Width / 2 + x;
+        if (bitmapX < 0 || bitmapX >= Width)
+        {
+            return;
+        }
+        var bitmapY = Height / 2 - (y + 1);
+        if (bitmapY < 0 || bitmapY >= Height)
+        {
+            return;
+        }
+        var bitmapColour = new Rgba32(colour.Red / 255F, colour.Green / 255F, colour.Blue / 255F);
+        bitmap[bitmapX, bitmapY] = bitmapColour;
     }
 
     public Task SaveAsync(string path, CancellationToken cancellationToken)
